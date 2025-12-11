@@ -3,620 +3,745 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Professional academic portfolio for Meng-Jen (Miya) Lin, PhD Applicant in Marketing & Psychology.">
     <title>Meng-Jen (Miya) Lin | Academic Portfolio</title>
+    <meta name="description" content="Professional academic portfolio for Meng-Jen (Miya) Lin, PhD Applicant in Marketing & Psychology.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Removed Cinzel Decorative, kept DM Serif Display and Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Configuration -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: {
-              serif: ['"Playfair Display"', 'serif'],
-              sans: ['"Inter"', 'sans-serif'],
-            },
             colors: {
-              navy: {
-                800: '#1e293b', 
-                900: '#0f172a', 
-              },
-              warm: {
-                50: '#fafaf9', 
-                100: '#f5f5f4', 
-              },
-              amber: {
-                500: '#f59e0b',
-                600: '#d97706',
-              }
+                'mystic-teal': '#1F3B4D',     // Primary Dark Background
+                'mystic-cream': '#F5F2E8',    // Primary Light Background
+                'mystic-clay': '#8C5E3C',     // Accent / Buttons
+                'mystic-gold': '#C5A065',     // Highlights / Icons
+                'mystic-text-dark': '#2C3333',
+                'mystic-text-light': '#E8E6E1',
+            },
+            fontFamily: {
+                // Removed 'display'
+                'serif': ['"DM Serif Display"', 'serif'],
+                'sans': ['"Montserrat"', 'sans-serif'],
+            },
+            borderRadius: {
+                'arch': '150px 150px 0 0',
+            },
+            keyframes: {
+                'fade-in-down': {
+                    '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                }
+            },
+            animation: {
+                'fade-in-down': 'fade-in-down 0.3s ease-out',
             }
           }
         }
       }
     </script>
-    
+
     <style>
-      html {
-        scroll-behavior: smooth;
-      }
-      .glass-nav {
-        background-color: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(8px);
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      }
+        /* Noise Texture */
+        .bg-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F2E8; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8C5E3C; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1F3B4D; 
+        }
+
+        /* Custom utility for underline animation */
+        .link-underline {
+            position: relative;
+        }
+        .link-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #8C5E3C;
+            transition: width 0.3s ease;
+        }
+        .link-underline:hover::after {
+            width: 100%;
+        }
     </style>
 <script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+    "react": "https://esm.sh/react@^19.2.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.1/",
+    "react/": "https://esm.sh/react@^19.2.1/"
   }
 }
 </script>
 </head>
-<body class="bg-warm-50 text-slate-800 antialiased font-sans selection:bg-amber-100 selection:text-navy-900">
+<body class="bg-mystic-cream text-mystic-text-dark antialiased font-sans selection:bg-mystic-gold selection:text-white">
 
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6 bg-transparent">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="font-serif font-bold text-xl tracking-wide text-navy-900">
-                Meng-Jen (Miya) Lin
-            </a>
+    <!-- Global Background Texture -->
+    <div class="fixed inset-0 pointer-events-none bg-texture opacity-30 z-0"></div>
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="#about" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors uppercase tracking-wider">About</a>
-                <a href="#education" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors uppercase tracking-wider">Education</a>
-                <a href="#projects" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors uppercase tracking-wider">Research</a>
-                <a href="#teaching" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors uppercase tracking-wider">Teaching</a>
-                <a href="#skills" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors uppercase tracking-wider">Skills</a>
-                <a href="Final_Meng_Jen_s_Resume.pdf" class="text-sm font-medium px-5 py-2 bg-navy-900 text-white rounded-full hover:bg-slate-700 transition-colors">
-                    CV
+    <div class="relative z-10">
+        
+        <!-- Navigation -->
+        <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 bg-transparent py-8">
+            <div class="container mx-auto px-6 flex justify-between items-center">
+                <!-- Changed to font-serif for classical look -->
+                <a href="#" class="font-serif text-3xl tracking-wide text-mystic-teal">
+                    Miya Lin
                 </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-10 items-center">
+                    <a href="#about" class="text-sm font-sans font-medium text-mystic-text-dark hover:text-mystic-clay transition-colors tracking-widest uppercase link-underline">About</a>
+                    <a href="#education" class="text-sm font-sans font-medium text-mystic-text-dark hover:text-mystic-clay transition-colors tracking-widest uppercase link-underline">Education</a>
+                    <a href="#projects" class="text-sm font-sans font-medium text-mystic-text-dark hover:text-mystic-clay transition-colors tracking-widest uppercase link-underline">Research</a>
+                    <a href="#teaching" class="text-sm font-sans font-medium text-mystic-text-dark hover:text-mystic-clay transition-colors tracking-widest uppercase link-underline">Teaching</a>
+                    <a href="#skills" class="text-sm font-sans font-medium text-mystic-text-dark hover:text-mystic-clay transition-colors tracking-widest uppercase link-underline">Skills</a>
+                    
+                    <a href="Final_Meng_Jen_s_Resume.pdf" class="text-sm font-sans font-bold tracking-widest px-6 py-2 border border-mystic-teal text-mystic-teal rounded-full hover:bg-mystic-teal hover:text-mystic-cream transition-all duration-300">
+                        CV
+                    </a>
+                </div>
+
+                <!-- Mobile Toggle -->
+                <button id="menu-btn" class="md:hidden text-mystic-teal hover:text-mystic-clay transition-colors focus:outline-none">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
             </div>
 
-            <!-- Mobile Toggle -->
-            <button id="menu-btn" class="md:hidden text-navy-900 focus:outline-none">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
-        </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-mystic-cream shadow-xl border-t border-mystic-gold/30 flex-col p-6 space-y-4 animate-fade-in-down">
+                <!-- Changed to font-sans font-medium -->
+                <a href="#about" class="mobile-link text-base font-sans font-medium text-mystic-text-dark hover:text-mystic-clay uppercase">About</a>
+                <a href="#education" class="mobile-link text-base font-sans font-medium text-mystic-text-dark hover:text-mystic-clay uppercase">Education</a>
+                <a href="#projects" class="mobile-link text-base font-sans font-medium text-mystic-text-dark hover:text-mystic-clay uppercase">Research</a>
+                <a href="#teaching" class="mobile-link text-base font-sans font-medium text-mystic-text-dark hover:text-mystic-clay uppercase">Teaching</a>
+                <a href="#skills" class="mobile-link text-base font-sans font-medium text-mystic-text-dark hover:text-mystic-clay uppercase">Skills</a>
+                <a href="Final_Meng_Jen_s_Resume.pdf" class="text-center font-bold px-5 py-3 bg-mystic-teal text-mystic-cream rounded-md mt-4">
+                    Download CV
+                </a>
+            </div>
+        </nav>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-6 px-6 flex-col space-y-4 border-t border-slate-100">
-            <a href="#about" class="mobile-link text-base font-medium text-slate-800">About</a>
-            <a href="#education" class="mobile-link text-base font-medium text-slate-800">Education</a>
-            <a href="#projects" class="mobile-link text-base font-medium text-slate-800">Research</a>
-            <a href="#teaching" class="mobile-link text-base font-medium text-slate-800">Teaching</a>
-            <a href="#skills" class="mobile-link text-base font-medium text-slate-800">Skills</a>
-            <a href="Final_Meng_Jen_s_Resume.pdf" class="text-center font-medium px-5 py-3 bg-navy-900 text-white rounded-md">Download CV</a>
-        </div>
-    </nav>
+        <!-- Hero Section -->
+        <section id="about" class="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-mystic-cream">
+            <!-- Decorative background elements -->
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-mystic-teal/5 -skew-x-12 translate-x-32 hidden lg:block border-l border-mystic-gold/10"></div>
+            <!-- Changed to font-serif -->
+            <div class="absolute bottom-20 left-10 text-9xl font-serif text-mystic-gold/5 pointer-events-none select-none">
+                Scholar
+            </div>
 
-    <!-- Hero Section -->
-    <section id="about" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-warm-50">
-        <!-- Decorative background -->
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-slate-200/30 -skew-x-12 translate-x-20 hidden lg:block"></div>
-
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                 
                 <!-- Text Content -->
                 <div class="flex-1 order-2 lg:order-1 text-center lg:text-left">
-                    <div class="inline-block px-3 py-1 mb-6 border border-slate-300 rounded-full bg-white/50 backdrop-blur-sm">
-                        <span class="text-xs font-semibold tracking-widest text-slate-500 uppercase">
+                    <div class="inline-block px-4 py-2 mb-8 border border-mystic-clay/30 rounded-full bg-mystic-cream/80 backdrop-blur-sm">
+                        <!-- Changed to font-sans font-bold -->
+                        <span class="text-xs font-sans font-bold tracking-[0.2em] text-mystic-clay uppercase">
                             Meng-Jen (Miya) Lin • PhD Applicant
                         </span>
                     </div>
                     
-                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-navy-900 leading-tight mb-6">
+                    <h1 class="font-serif italic text-5xl md:text-6xl lg:text-7xl text-mystic-teal leading-tight mb-8">
                         Emotion and social influence in consumer decision making
                     </h1>
                     
-                    <p class="text-lg md:text-xl text-slate-600 mb-6 font-medium">
+                    <p class="text-xl md:text-2xl text-mystic-text-dark mb-8 font-serif leading-relaxed">
                         Combining experimental design and computational text mining to study consumers in digital and AI-mediated contexts.
                     </p>
 
-                    <p class="text-base md:text-lg text-slate-500 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    <p class="text-base md:text-lg text-mystic-text-dark/80 mb-12 leading-loose max-w-2xl mx-auto lg:mx-0 font-light">
                         Researcher in Consumer Behavior & Technology. As a recipient of the NTNU Outstanding Student Award and Principal Investigator of an NSTC Grant, I use experiments and text-based methods to study how emotional states shape consumer decisions in digital marketplaces. 
-                        Recently, I have been building a reproducible Python-based research pipeline with AI-assisted coding to scale up text analysis for my PhD proposal.
                     </p>
 
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <a href="#projects" class="group flex items-center justify-center gap-2 bg-navy-900 text-white px-8 py-4 rounded-md font-medium hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
-                            View Research
-                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    <div class="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+                        <a href="#projects" class="group flex items-center justify-center gap-3 bg-mystic-teal text-mystic-cream px-10 py-4 rounded-sm font-sans font-bold tracking-widest text-sm hover:bg-mystic-clay transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                            VIEW RESEARCH
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
                         </a>
-                        <a href="Final_Meng_Jen_s_Resume.pdf" class="flex items-center justify-center gap-2 bg-white text-navy-900 border border-slate-200 px-8 py-4 rounded-md font-medium hover:bg-slate-50 transition-all hover:-translate-y-1">
-                            Download CV
-                            <i data-lucide="download" class="w-4 h-4"></i>
+                        <a href="Final_Meng_Jen_s_Resume.pdf" class="flex items-center justify-center gap-3 bg-transparent border border-mystic-teal text-mystic-teal px-10 py-4 rounded-sm font-sans font-bold tracking-widest text-sm hover:bg-mystic-cream hover:border-mystic-clay hover:text-mystic-clay transition-all hover:-translate-y-1">
+                            DOWNLOAD CV
+                            <i class="fa-solid fa-download text-xs"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- Image Content -->
+                <!-- Image Content - The Arch -->
                 <div class="flex-1 order-1 lg:order-2 flex justify-center lg:justify-end">
-                    <div class="relative w-64 h-64 md:w-80 md:h-80 lg:w-[450px] lg:h-[550px]">
-                        <!-- Backing shape -->
-                        <div class="absolute inset-0 bg-slate-200 transform translate-x-4 translate-y-4 rounded-sm"></div>
+                    <div class="relative w-72 h-80 md:w-96 md:h-[500px] lg:w-[480px] lg:h-[600px]">
+                        <!-- Backing shape outline -->
+                        <div class="absolute inset-0 border-2 border-mystic-gold transform translate-x-6 translate-y-6 rounded-arch opacity-60"></div>
                         
                         <!-- Image container -->
-                        <div class="absolute inset-0 bg-white p-2 shadow-2xl rounded-sm overflow-hidden">
-                            <img src="profile.png" alt="Meng-Jen (Miya) Lin" class="w-full h-full object-cover rounded-sm">
+                        <div class="absolute inset-0 bg-mystic-teal rounded-arch overflow-hidden shadow-2xl border-b-8 border-mystic-gold">
+                            <img src="profile.png" alt="Meng-Jen (Miya) Lin" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-700" />
+                            <!-- Overlay gradient -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-mystic-teal/60 to-transparent"></div>
                         </div>
 
                         <!-- Floater badge -->
-                        <div class="absolute -bottom-6 -left-6 bg-white p-4 shadow-xl rounded-lg border-l-4 border-amber-500 max-w-[180px] hidden md:block">
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Highlight</p>
-                            <p class="text-sm font-bold text-navy-900 leading-snug">NSTC Grant Principal Investigator</p>
+                        <div class="absolute -bottom-8 -left-8 bg-mystic-cream p-6 shadow-xl rounded-sm border-t-4 border-mystic-clay max-w-[220px] hidden md:block z-20">
+                            <!-- Changed to font-sans font-bold -->
+                            <p class="text-xs font-sans font-bold text-mystic-clay uppercase tracking-wider mb-2">Highlight</p>
+                            <p class="text-md font-serif italic text-mystic-teal leading-snug">NSTC Grant Principal Investigator</p>
                         </div>
                     </div>
                 </div>
                 
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Stats Section -->
-    <section class="bg-navy-900 py-16 text-white">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                
-                <!-- Stat 1 -->
-                <div class="flex flex-col items-center text-center p-4 group">
-                    <div class="mb-4 p-3 bg-white/10 rounded-full text-amber-400 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="clock" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-3xl md:text-4xl font-serif font-bold mb-2 text-white">50+</h3>
-                    <p class="text-slate-300 text-sm font-medium uppercase tracking-wide">Months Research Experience</p>
-                </div>
+        <!-- Stats Section -->
+        <section class="bg-mystic-teal py-24 text-mystic-cream relative overflow-hidden">
+            <!-- Subtle noise texture on dark bg -->
+            <div class="absolute inset-0 opacity-10 bg-texture"></div>
 
-                <!-- Stat 2 -->
-                <div class="flex flex-col items-center text-center p-4 group">
-                    <div class="mb-4 p-3 bg-white/10 rounded-full text-amber-400 group-hover:scale-110 transition-transform duration-300">
-                         <i data-lucide="mic" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-3xl md:text-4xl font-serif font-bold mb-2 text-white">ACR 2025</h3>
-                    <p class="text-slate-300 text-sm font-medium uppercase tracking-wide">Conference Presenter</p>
-                </div>
-
-                <!-- Stat 3 -->
-                <div class="flex flex-col items-center text-center p-4 group">
-                    <div class="mb-4 p-3 bg-white/10 rounded-full text-amber-400 group-hover:scale-110 transition-transform duration-300">
-                         <i data-lucide="pen-tool" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-serif font-bold mb-2 text-white">Corresponding Author</h3>
-                    <p class="text-slate-300 text-sm font-medium uppercase tracking-wide">Journal Manuscript</p>
-                </div>
-
-                <!-- Stat 4 -->
-                <div class="flex flex-col items-center text-center p-4 group">
-                    <div class="mb-4 p-3 bg-white/10 rounded-full text-amber-400 group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="award" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-3xl md:text-4xl font-serif font-bold mb-2 text-white">Top 3</h3>
-                    <p class="text-slate-300 text-sm font-medium uppercase tracking-wide">University Outstanding Student</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section id="education" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="max-w-3xl mb-12">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-navy-900 mb-4">Education</h2>
-                <div class="w-20 h-1 bg-amber-500 mb-6"></div>
-            </div>
-
-            <div class="space-y-8">
-                <!-- NTNU -->
-                <div class="flex flex-col md:flex-row md:items-start gap-4 p-6 rounded-lg hover:bg-warm-50 transition-colors border-l-4 border-navy-900 shadow-sm">
-                    <div class="mt-1 text-amber-500">
-                         <i data-lucide="graduation-cap" class="w-7 h-7"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
-                            <h3 class="text-xl font-bold text-navy-900">National Taiwan Normal University (NTNU)</h3>
-                            <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full whitespace-nowrap w-fit mt-2 md:mt-0">
-                                Sep. 2021 – Jan. 2026 (expected)
-                            </span>
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 border-t border-b border-mystic-gold/20 py-12">
+                    
+                    <!-- Stat 1 -->
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="mb-6 text-mystic-gold text-3xl group-hover:scale-110 transition-transform duration-500 ease-out">
+                            <i class="fa-solid fa-clock"></i>
                         </div>
-                        <div class="text-lg font-medium text-slate-700 mb-1">Bachelor of Business Administration (B.B.A.)</div>
-                        <p class="text-slate-600 mb-1">GPA: 4.21/4.30</p>
-                        <p class="text-sm text-slate-400">Taipei, Taiwan</p>
+                        <!-- Changed to font-serif -->
+                        <h3 class="text-4xl md:text-5xl font-serif text-mystic-cream mb-3">50+</h3>
+                        <p class="text-mystic-gold/80 text-xs font-sans font-bold uppercase tracking-[0.15em]">Months Research Experience</p>
                     </div>
-                </div>
 
-                <!-- Manchester -->
-                <div class="flex flex-col md:flex-row md:items-start gap-4 p-6 rounded-lg hover:bg-warm-50 transition-colors border-l-4 border-navy-900 shadow-sm">
-                    <div class="mt-1 text-amber-500">
-                        <i data-lucide="graduation-cap" class="w-7 h-7"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
-                            <h3 class="text-xl font-bold text-navy-900">The University of Manchester</h3>
-                            <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full whitespace-nowrap w-fit mt-2 md:mt-0">
-                                Jan. 2025 – Jun. 2025
-                            </span>
+                    <!-- Stat 2 -->
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="mb-6 text-mystic-gold text-3xl group-hover:scale-110 transition-transform duration-500 ease-out">
+                            <i class="fa-solid fa-microphone"></i>
                         </div>
-                        <div class="text-lg font-medium text-slate-700 mb-1">Exchange Student</div>
-                        <p class="text-slate-600 mb-1">Alliance Manchester Business School</p>
-                        <p class="text-sm text-slate-400">Manchester, UK</p>
+                        <!-- Changed to font-serif -->
+                        <h3 class="text-4xl md:text-5xl font-serif text-mystic-cream mb-3">ACR 2025</h3>
+                        <p class="text-mystic-gold/80 text-xs font-sans font-bold uppercase tracking-[0.15em]">Conference Presenter</p>
                     </div>
-                </div>
 
-                <!-- Kyushu -->
-                <div class="flex flex-col md:flex-row md:items-start gap-4 p-6 rounded-lg hover:bg-warm-50 transition-colors border-l-4 border-navy-900 shadow-sm">
-                    <div class="mt-1 text-amber-500">
-                        <i data-lucide="graduation-cap" class="w-7 h-7"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
-                            <h3 class="text-xl font-bold text-navy-900">Kyushu University</h3>
-                            <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full whitespace-nowrap w-fit mt-2 md:mt-0">
-                                Oct. 2025 – Feb. 2026 (expected)
-                            </span>
+                    <!-- Stat 3 -->
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="mb-6 text-mystic-gold text-3xl group-hover:scale-110 transition-transform duration-500 ease-out">
+                            <i class="fa-solid fa-pen-nib"></i>
                         </div>
-                        <div class="text-lg font-medium text-slate-700 mb-1">Exchange Student</div>
-                        <p class="text-slate-600 mb-1">School of Economics</p>
-                        <p class="text-sm text-slate-400">Fukuoka, Japan</p>
+                        <!-- Changed to font-serif -->
+                        <h3 class="text-4xl md:text-5xl font-serif text-mystic-cream mb-3">Author</h3>
+                        <p class="text-mystic-gold/80 text-xs font-sans font-bold uppercase tracking-[0.15em]">Journal Manuscript (Corresponding)</p>
                     </div>
+
+                    <!-- Stat 4 -->
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="mb-6 text-mystic-gold text-3xl group-hover:scale-110 transition-transform duration-500 ease-out">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <!-- Changed to font-serif -->
+                        <h3 class="text-4xl md:text-5xl font-serif text-mystic-cream mb-3">Top 3</h3>
+                        <p class="text-mystic-gold/80 text-xs font-sans font-bold uppercase tracking-[0.15em]">University Outstanding Student</p>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Research Projects Section -->
-    <section id="projects" class="py-24 bg-warm-50 border-t border-slate-200">
-        <div class="container mx-auto px-6">
-            <div class="max-w-3xl mb-16">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-navy-900 mb-4">Selected Research</h2>
-                <div class="w-20 h-1 bg-amber-500 mb-6"></div>
-                <p class="text-slate-600 text-lg">
-                    My research combines experimental design with computational text analysis to study how emotional and social motivations shape consumer decisions in digital and AI-mediated environments.
-                </p>
+        <!-- Education Section -->
+        <section id="education" class="py-24 bg-mystic-cream">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl mb-16 text-center md:text-left">
+                    <h2 class="font-serif italic text-4xl md:text-5xl text-mystic-teal mb-6">Education</h2>
+                    <div class="w-24 h-1 bg-mystic-clay mx-auto md:mx-0"></div>
+                </div>
+
+                <div class="space-y-10 relative">
+                    <!-- Vertical line for timeline effect -->
+                    <div class="absolute left-8 top-4 bottom-4 w-px bg-mystic-clay/30 hidden md:block"></div>
+
+                    <!-- NTNU -->
+                    <div class="relative flex flex-col md:flex-row md:items-start gap-8 group">
+                        <div class="hidden md:flex flex-shrink-0 w-16 h-16 bg-mystic-cream border-2 border-mystic-clay rounded-full items-center justify-center text-mystic-clay z-10 group-hover:bg-mystic-clay group-hover:text-mystic-cream transition-colors duration-300">
+                            <i class="fa-solid fa-graduation-cap text-xl"></i>
+                        </div>
+                        
+                        <div class="flex-1 p-8 bg-white border border-mystic-clay/10 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-mystic-teal"></div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
+                                <h3 class="text-2xl font-serif text-mystic-teal">National Taiwan Normal University (NTNU)</h3>
+                                <span class="text-xs font-bold text-mystic-clay uppercase tracking-widest mt-2 md:mt-0 border border-mystic-clay/30 px-3 py-1 rounded-full">
+                                    Sep. 2021 – Jan. 2026
+                                </span>
+                            </div>
+                            <div class="text-lg font-medium text-mystic-text-dark mb-2">Bachelor of Business Administration (B.B.A.)</div>
+                            <p class="text-mystic-text-dark/70 font-serif italic mb-1 text-lg">GPA: 4.21/4.30</p>
+                            <p class="text-sm text-mystic-clay font-bold tracking-wide uppercase">Taipei, Taiwan</p>
+                        </div>
+                    </div>
+
+                    <!-- Manchester -->
+                    <div class="relative flex flex-col md:flex-row md:items-start gap-8 group">
+                        <div class="hidden md:flex flex-shrink-0 w-16 h-16 bg-mystic-cream border-2 border-mystic-clay rounded-full items-center justify-center text-mystic-clay z-10 group-hover:bg-mystic-clay group-hover:text-mystic-cream transition-colors duration-300">
+                            <i class="fa-solid fa-graduation-cap text-xl"></i>
+                        </div>
+                        <div class="flex-1 p-8 bg-white border border-mystic-clay/10 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-mystic-gold"></div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
+                                <h3 class="text-2xl font-serif text-mystic-teal">The University of Manchester</h3>
+                                <span class="text-xs font-bold text-mystic-clay uppercase tracking-widest mt-2 md:mt-0 border border-mystic-clay/30 px-3 py-1 rounded-full">
+                                    Jan. 2025 – Jun. 2025
+                                </span>
+                            </div>
+                            <div class="text-lg font-medium text-mystic-text-dark mb-2">Exchange Student</div>
+                            <p class="text-mystic-text-dark/70 font-serif italic mb-1 text-lg">Alliance Manchester Business School</p>
+                            <p class="text-sm text-mystic-clay font-bold tracking-wide uppercase">Manchester, UK</p>
+                        </div>
+                    </div>
+
+                    <!-- Kyushu -->
+                    <div class="relative flex flex-col md:flex-row md:items-start gap-8 group">
+                        <div class="hidden md:flex flex-shrink-0 w-16 h-16 bg-mystic-cream border-2 border-mystic-clay rounded-full items-center justify-center text-mystic-clay z-10 group-hover:bg-mystic-clay group-hover:text-mystic-cream transition-colors duration-300">
+                            <i class="fa-solid fa-graduation-cap text-xl"></i>
+                        </div>
+                        <div class="flex-1 p-8 bg-white border border-mystic-clay/10 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-mystic-gold"></div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
+                                <h3 class="text-2xl font-serif text-mystic-teal">Kyushu University</h3>
+                                <span class="text-xs font-bold text-mystic-clay uppercase tracking-widest mt-2 md:mt-0 border border-mystic-clay/30 px-3 py-1 rounded-full">
+                                    Oct. 2025 – Feb. 2026
+                                </span>
+                            </div>
+                            <div class="text-lg font-medium text-mystic-text-dark mb-2">Exchange Student</div>
+                            <p class="text-mystic-text-dark/70 font-serif italic mb-1 text-lg">School of Economics</p>
+                            <p class="text-sm text-mystic-clay font-bold tracking-wide uppercase">Fukuoka, Japan</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Section -->
+        <section id="projects" class="py-24 bg-mystic-teal relative">
+            <!-- Background pattern -->
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-5 pointer-events-none">
+                <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full border-[30px] border-mystic-gold"></div>
+                <!-- Changed to font-serif -->
+                <div class="absolute top-1/2 left-10 text-9xl font-serif text-mystic-cream select-none opacity-20">Research</div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-                
-                <!-- Project 1 -->
-                <div class="group relative bg-white rounded-xl p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-slate-100">
-                    <div class="absolute top-8 right-8 text-slate-300 group-hover:text-amber-500 transition-colors">
-                        <i data-lucide="arrow-up-right" class="w-8 h-8"></i>
-                    </div>
-                    <div class="mb-6">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-4 bg-navy-900 text-white">
-                            Manuscript Under Review
-                        </span>
-                        <h3 class="font-serif text-2xl font-bold text-navy-900 mb-3 group-hover:text-amber-600 transition-colors">
-                            The More You Ask, The More You Love
-                        </h3>
-                    </div>
-                    <p class="text-slate-600 leading-relaxed mb-6">
-                        Investigating how question-asking with conversational AI chatbots fosters brand love. Manuscript under review at Computers in Human Behavior. Role: Corresponding Author.
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-4xl mb-16">
+                    <h2 class="font-serif italic text-4xl md:text-5xl text-mystic-cream mb-6">Selected Research</h2>
+                    <div class="w-24 h-1 bg-mystic-gold mb-8"></div>
+                    <p class="text-mystic-text-light/80 text-lg font-serif italic leading-relaxed">
+                        My research combines experimental design with computational text analysis to study how emotional and social motivations shape consumer decisions in digital and AI-mediated environments.
                     </p>
                 </div>
 
-                <!-- Project 2 -->
-                <div class="group relative bg-white rounded-xl p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-slate-100">
-                    <div class="absolute top-8 right-8 text-slate-300 group-hover:text-amber-500 transition-colors">
-                        <i data-lucide="arrow-up-right" class="w-8 h-8"></i>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    
+                    <!-- Project 1 -->
+                    <div class="group relative bg-mystic-cream rounded-sm p-10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border-t-4 border-mystic-gold">
+                        <div class="absolute top-8 right-8 text-mystic-clay/50 group-hover:text-mystic-clay transition-colors">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-2xl"></i>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <span class="inline-block px-4 py-1.5 border border-mystic-teal text-mystic-teal text-xs font-bold tracking-widest uppercase mb-6 rounded-full">
+                                Manuscript Under Review
+                            </span>
+                            <h3 class="font-serif text-3xl text-mystic-teal mb-4 group-hover:text-mystic-clay transition-colors leading-tight">
+                                The More You Ask, The More You Love
+                            </h3>
+                        </div>
+                        
+                        <p class="text-mystic-text-dark/80 leading-relaxed mb-6 font-sans">
+                            Investigating how question-asking with conversational AI chatbots fosters brand love. Manuscript under review at Computers in Human Behavior. Role: Corresponding Author.
+                        </p>
                     </div>
-                    <div class="mb-6">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-4 bg-navy-900 text-white">
-                            ACR 2025 Presentation
-                        </span>
-                        <h3 class="font-serif text-2xl font-bold text-navy-900 mb-3 group-hover:text-amber-600 transition-colors">
-                            Beyond Low Price: Hedonic Motivation in 'Dupes'
-                        </h3>
+
+                    <!-- Project 2 -->
+                    <div class="group relative bg-mystic-cream rounded-sm p-10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border-t-4 border-mystic-gold">
+                        <div class="absolute top-8 right-8 text-mystic-clay/50 group-hover:text-mystic-clay transition-colors">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-2xl"></i>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <span class="inline-block px-4 py-1.5 border border-mystic-teal text-mystic-teal text-xs font-bold tracking-widest uppercase mb-6 rounded-full">
+                                ACR 2025 Presentation
+                            </span>
+                            <h3 class="font-serif text-3xl text-mystic-teal mb-4 group-hover:text-mystic-clay transition-colors leading-tight">
+                                Beyond Low Price: Hedonic Motivation in 'Dupes'
+                            </h3>
+                        </div>
+                        
+                        <p class="text-mystic-text-dark/80 leading-relaxed mb-6 font-sans">
+                            Uncovering the influence of hedonic motivation and fear of missing out on purchase intention of dupes. Role: Presenter & 2nd Author.
+                        </p>
                     </div>
-                    <p class="text-slate-600 leading-relaxed mb-6">
-                        Uncovering the influence of hedonic motivation and fear of missing out on purchase intention of dupes. Role: Presenter & 2nd Author.
+
+                    <!-- Project 3 -->
+                    <div class="group relative bg-mystic-cream rounded-sm p-10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border-t-4 border-mystic-gold">
+                        <div class="absolute top-8 right-8 text-mystic-clay/50 group-hover:text-mystic-clay transition-colors">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-2xl"></i>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <span class="inline-block px-4 py-1.5 border border-mystic-teal text-mystic-teal text-xs font-bold tracking-widest uppercase mb-6 rounded-full">
+                                NSTC Grant PI
+                            </span>
+                            <h3 class="font-serif text-3xl text-mystic-teal mb-4 group-hover:text-mystic-clay transition-colors leading-tight">
+                                More Loneliness, More Spending
+                            </h3>
+                        </div>
+                        
+                        <p class="text-mystic-text-dark/80 leading-relaxed mb-6 font-sans">
+                            National Science and Technology Council (NSTC) Undergraduate Research Grant. Investigating the influence of loneliness, immersion satisfaction, and escapism on willingness to pay. Role: Principal Investigator.
+                        </p>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="group relative bg-mystic-cream rounded-sm p-10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border-t-4 border-mystic-gold">
+                        <div class="absolute top-8 right-8 text-mystic-clay/50 group-hover:text-mystic-clay transition-colors">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-2xl"></i>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <span class="inline-block px-4 py-1.5 border border-mystic-teal text-mystic-teal text-xs font-bold tracking-widest uppercase mb-6 rounded-full">
+                                Research Pipeline Demo
+                            </span>
+                            <h3 class="font-serif text-3xl text-mystic-teal mb-4 group-hover:text-mystic-clay transition-colors leading-tight">
+                                Text-based Analysis of “Dupe” Product Consumption
+                            </h3>
+                        </div>
+                        
+                        <p class="text-mystic-text-dark/80 leading-relaxed mb-6 font-sans">
+                            A reproducible Python pipeline for Study 1 of my PhD proposal, integrating automated text preprocessing, AI-assisted qualitative coding (Llama-3 via Groq API), and statistical validation.
+                        </p>
+
+                        <a href="https://github.com/mengjenmiyalin/dupe-analysis-demo" target="_blank" rel="noreferrer" 
+                           class="inline-flex items-center text-sm font-bold text-mystic-clay hover:text-mystic-teal uppercase tracking-wide border-b-2 border-transparent hover:border-mystic-teal pb-1 transition-all">
+                            View Repository
+                            <i class="fa-solid fa-external-link-alt ml-2 text-xs"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Documents Section -->
+        <section id="research-portfolio" class="py-20 bg-mystic-cream border-t border-mystic-clay/10">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl mb-12">
+                    <h2 class="font-serif italic text-3xl md:text-4xl text-mystic-teal mb-4">
+                        Research Portfolio & Documents
+                    </h2>
+                    <div class="w-20 h-1 bg-mystic-clay mb-6"></div>
+                    <p class="text-mystic-text-dark/70 mb-6 font-serif text-lg">
+                        Selected documents illustrating my research pipeline, methodological approach, and proposed Ph.D. research agenda.
                     </p>
                 </div>
 
-                <!-- Project 3 -->
-                <div class="group relative bg-white rounded-xl p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-slate-100">
-                    <div class="absolute top-8 right-8 text-slate-300 group-hover:text-amber-500 transition-colors">
-                        <i data-lucide="arrow-up-right" class="w-8 h-8"></i>
-                    </div>
-                    <div class="mb-6">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-4 bg-navy-900 text-white">
-                            NSTC Grant PI
-                        </span>
-                        <h3 class="font-serif text-2xl font-bold text-navy-900 mb-3 group-hover:text-amber-600 transition-colors">
-                            More Loneliness, More Spending
-                        </h3>
-                    </div>
-                    <p class="text-slate-600 leading-relaxed mb-6">
-                        National Science and Technology Council (NSTC) Undergraduate Research Grant. Investigating the influence of loneliness, immersion satisfaction, and escapism on willingness to pay. Role: Principal Investigator.
-                    </p>
-                </div>
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <a href="Lin_MengJen_Research_Workflow.pdf" target="_blank" rel="noreferrer"
+                       class="group flex items-center gap-4 px-8 py-6 rounded-sm bg-white border border-mystic-teal/10 hover:border-mystic-teal transition-all duration-300 shadow-sm hover:shadow-lg">
+                        <div class="w-12 h-12 flex items-center justify-center bg-mystic-cream text-mystic-teal rounded-full group-hover:bg-mystic-teal group-hover:text-white transition-colors">
+                            <i class="fa-regular fa-file-pdf text-xl"></i>
+                        </div>
+                        <span class="font-sans font-medium text-mystic-text-dark group-hover:text-mystic-teal transition-colors">Research Workflow Document</span>
+                    </a>
 
-                <!-- Project 4 -->
-                <div class="group relative bg-white rounded-xl p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-slate-100">
-                    <div class="absolute top-8 right-8 text-slate-300 group-hover:text-amber-500 transition-colors">
-                        <i data-lucide="arrow-up-right" class="w-8 h-8"></i>
-                    </div>
-                    <div class="mb-6">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-4 bg-slate-200 text-slate-600">
-                            Research Pipeline Demo
-                        </span>
-                        <h3 class="font-serif text-2xl font-bold text-navy-900 mb-3 group-hover:text-amber-600 transition-colors">
-                            Text-based Analysis of “Dupe” Product Consumption
-                        </h3>
-                    </div>
-                    <p class="text-slate-600 leading-relaxed mb-6">
-                        A reproducible Python pipeline for Study 1 of my PhD proposal, integrating automated text preprocessing, 
-                        AI-assisted qualitative coding (Llama-3 via Groq API), and statistical validation (Chi-square and logistic regression) 
-                        to examine how hedonic vs. utilitarian motivations shape purchase intention for dupes.
-                    </p>
-                    <a href="https://github.com/mengjenmiyalin/dupe-analysis-demo" target="_blank" 
-                       class="inline-flex items-center text-sm font-semibold text-amber-600 hover:text-amber-700">
-                        View GitHub repository
-                        <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+                    <a href="Lin_MengJen_PhD_Research_Proposal.pdf" target="_blank" rel="noreferrer"
+                       class="group flex items-center gap-4 px-8 py-6 rounded-sm bg-white border border-mystic-teal/10 hover:border-mystic-teal transition-all duration-300 shadow-sm hover:shadow-lg">
+                        <div class="w-12 h-12 flex items-center justify-center bg-mystic-cream text-mystic-teal rounded-full group-hover:bg-mystic-teal group-hover:text-white transition-colors">
+                            <i class="fa-regular fa-file-pdf text-xl"></i>
+                        </div>
+                        <span class="font-sans font-medium text-mystic-text-dark group-hover:text-mystic-teal transition-colors">Ph.D. Research Proposal</span>
                     </a>
                 </div>
-
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="research-portfolio" class="py-16 bg-white border-t border-slate-200">
-        <div class="container mx-auto px-6">
-            <div class="max-w-3xl mb-16">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-navy-900 mb-4">
-                  Research Portfolio & Documents
-                </h2>
-                <div class="w-20 h-1 bg-amber-500 mb-6"></div>
-                <p class="text-slate-600 mb-6">
-                  Selected documents illustrating my research pipeline, methodological approach, and proposed Ph.D. research agenda.
-                </p>
-            </div>
-
-    <div class="space-y-4 max-w-xl">
-      <a href="Lin_MengJen_Research_Workflow.pdf" target="_blank"
-         class="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-slate-100 hover:bg-slate-200 text-sm font-medium text-navy-900">
-        <span>📄 Research Workflow Document (PDF)</span>
-      </a>
-      <br/>
-      <a href="Lin_MengJen_PhD_Research_Proposal.pdf" target="_blank"
-         class="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-slate-100 hover:bg-slate-200 text-sm font-medium text-navy-900">
-        <span>📄 Ph.D. Research Proposal – “Dupe” Consumption (PDF)</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-    <!-- Teaching Section -->
-    <section id="teaching" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="max-w-3xl mb-12">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-navy-900 mb-4">Teaching Experience</h2>
-                <div class="w-20 h-1 bg-amber-500 mb-6"></div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                <div class="p-6 bg-navy-900 text-white border-b border-slate-100">
-                    <h3 class="font-serif text-xl font-bold flex items-center gap-2">
-                        <i data-lucide="book-open" class="text-amber-400 w-5 h-5"></i>
-                        National Taiwan Normal University
-                    </h3>
-                    <p class="text-slate-300 text-sm mt-1 ml-7">Teaching Assistant</p>
+        <!-- Teaching Section -->
+        <section id="teaching" class="py-24 bg-mystic-teal text-mystic-cream">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl mb-16">
+                    <h2 class="font-serif italic text-4xl text-white mb-6">Teaching Experience</h2>
+                    <div class="w-20 h-1 bg-mystic-gold mb-6"></div>
                 </div>
-                <div class="divide-y divide-slate-100">
-                    
-                    <div class="p-6 hover:bg-slate-50 transition-colors">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center">
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-lg">Internet Traffic Analysis & Application in Marketing (Graduate)</h4>
-                                <p class="text-slate-500 text-sm mt-1">Teaching Assistant</p>
-                            </div>
-                            <div class="mt-2 md:mt-0">
-                                <span class="text-sm font-medium text-slate-400 font-mono bg-slate-100 px-3 py-1 rounded">
-                                    Sep. 2024 – Dec. 2024
-                                </span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="p-6 hover:bg-slate-50 transition-colors">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center">
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-lg">Data-Driven Customer Relationship Management (EMBA)</h4>
-                                <p class="text-slate-500 text-sm mt-1">Teaching Assistant</p>
-                            </div>
-                            <div class="mt-2 md:mt-0">
-                                <span class="text-sm font-medium text-slate-400 font-mono bg-slate-100 px-3 py-1 rounded">
-                                    Sep. 2024 – Dec. 2024
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-6 hover:bg-slate-50 transition-colors">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center">
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-lg">Electronic Commerce (Undergraduate)</h4>
-                                <p class="text-slate-500 text-sm mt-1">Teaching Assistant</p>
-                            </div>
-                            <div class="mt-2 md:mt-0">
-                                <span class="text-sm font-medium text-slate-400 font-mono bg-slate-100 px-3 py-1 rounded">
-                                    Sep. 2023 – Dec. 2023
-                                </span>
-                            </div>
+                <div class="bg-mystic-cream rounded-sm shadow-2xl overflow-hidden max-w-4xl">
+                    <div class="p-8 bg-mystic-text-dark text-white border-b-4 border-mystic-gold flex items-center gap-4">
+                        <i class="fa-solid fa-book-open text-mystic-gold text-2xl"></i>
+                        <div>
+                            <h3 class="font-serif text-2xl tracking-wide">
+                                National Taiwan Normal University
+                            </h3>
+                            <p class="text-mystic-gold text-sm uppercase tracking-widest mt-1">Teaching Assistant</p>
                         </div>
                     </div>
                     
-                    <div class="p-6 hover:bg-slate-50 transition-colors">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center">
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-lg">Introduction to Business and Management (Undergraduate)</h4>
-                                <p class="text-slate-500 text-sm mt-1">Teaching Assistant</p>
-                            </div>
-                            <div class="mt-2 md:mt-0">
-                                <span class="text-sm font-medium text-slate-400 font-mono bg-slate-100 px-3 py-1 rounded">
-                                    Sep. 2023 – Dec. 2023
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-6 hover:bg-slate-50 transition-colors">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center">
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-lg">Business Intelligence and Big Data Analysis (GF-EMBA)</h4>
-                                <p class="text-slate-500 text-sm mt-1">Teaching Assistant</p>
-                            </div>
-                            <div class="mt-2 md:mt-0">
-                                <span class="text-sm font-medium text-slate-400 font-mono bg-slate-100 px-3 py-1 rounded">
-                                    Jun. 2023 – Sep. 2023
-                                </span>
+                    <div class="divide-y divide-mystic-teal/10">
+                        <!-- TA 1 -->
+                        <div class="p-8 hover:bg-white transition-colors group">
+                            <div class="flex flex-col md:flex-row justify-between md:items-center">
+                                <div>
+                                    <h4 class="font-serif text-mystic-teal text-xl group-hover:text-mystic-clay transition-colors">Internet Traffic Analysis & Application in Marketing (Graduate)</h4>
+                                    <p class="text-mystic-text-dark/60 text-sm mt-2 font-medium">Teaching Assistant</p>
+                                </div>
+                                <div class="mt-4 md:mt-0">
+                                    <!-- Changed to font-sans font-bold -->
+                                    <span class="text-xs font-sans font-bold text-mystic-teal/70 bg-mystic-teal/5 px-4 py-2 rounded-full whitespace-nowrap">
+                                        Sep. 2024 – Dec. 2024
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
+                        <!-- TA 2 -->
+                        <div class="p-8 hover:bg-white transition-colors group">
+                            <div class="flex flex-col md:flex-row justify-between md:items-center">
+                                <div>
+                                    <h4 class="font-serif text-mystic-teal text-xl group-hover:text-mystic-clay transition-colors">Data-Driven Customer Relationship Management (EMBA)</h4>
+                                    <p class="text-mystic-text-dark/60 text-sm mt-2 font-medium">Teaching Assistant</p>
+                                </div>
+                                <div class="mt-4 md:mt-0">
+                                    <!-- Changed to font-sans font-bold -->
+                                    <span class="text-xs font-sans font-bold text-mystic-teal/70 bg-mystic-teal/5 px-4 py-2 rounded-full whitespace-nowrap">
+                                        Sep. 2024 – Dec. 2024
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TA 3 -->
+                        <div class="p-8 hover:bg-white transition-colors group">
+                            <div class="flex flex-col md:flex-row justify-between md:items-center">
+                                <div>
+                                    <h4 class="font-serif text-mystic-teal text-xl group-hover:text-mystic-clay transition-colors">Electronic Commerce (Undergraduate)</h4>
+                                    <p class="text-mystic-text-dark/60 text-sm mt-2 font-medium">Teaching Assistant</p>
+                                </div>
+                                <div class="mt-4 md:mt-0">
+                                    <!-- Changed to font-sans font-bold -->
+                                    <span class="text-xs font-sans font-bold text-mystic-teal/70 bg-mystic-teal/5 px-4 py-2 rounded-full whitespace-nowrap">
+                                        Sep. 2023 – Dec. 2023
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TA 4 -->
+                        <div class="p-8 hover:bg-white transition-colors group">
+                            <div class="flex flex-col md:flex-row justify-between md:items-center">
+                                <div>
+                                    <h4 class="font-serif text-mystic-teal text-xl group-hover:text-mystic-clay transition-colors">Introduction to Business and Management (Undergraduate)</h4>
+                                    <p class="text-mystic-text-dark/60 text-sm mt-2 font-medium">Teaching Assistant</p>
+                                </div>
+                                <div class="mt-4 md:mt-0">
+                                    <!-- Changed to font-sans font-bold -->
+                                    <span class="text-xs font-sans font-bold text-mystic-teal/70 bg-mystic-teal/5 px-4 py-2 rounded-full whitespace-nowrap">
+                                        Sep. 2023 – Dec. 2023
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TA 5 -->
+                        <div class="p-8 hover:bg-white transition-colors group">
+                            <div class="flex flex-col md:flex-row justify-between md:items-center">
+                                <div>
+                                    <h4 class="font-serif text-mystic-teal text-xl group-hover:text-mystic-clay transition-colors">Business Intelligence and Big Data Analysis (GF-EMBA)</h4>
+                                    <p class="text-mystic-text-dark/60 text-sm mt-2 font-medium">Teaching Assistant</p>
+                                </div>
+                                <div class="mt-4 md:mt-0">
+                                    <!-- Changed to font-sans font-bold -->
+                                    <span class="text-xs font-sans font-bold text-mystic-teal/70 bg-mystic-teal/5 px-4 py-2 rounded-full whitespace-nowrap">
+                                        Jun. 2023 – Sep. 2023
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-warm-100 border-t border-slate-200">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row gap-12">
-                
-                <div class="lg:w-1/3">
-                    <h2 class="font-serif text-3xl font-bold text-navy-900 mb-4">Methodological & <br/>Technical Toolkit</h2>
-                    <div class="w-16 h-1 bg-amber-500 mb-6"></div>
-                    <p class="text-slate-600">
-                        I leverage a mixed-method approach, integrating traditional psychological experimentation with modern data science techniques to derive robust insights.
-                    </p>
-                </div>
-
-                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Skills Section -->
+        <section id="skills" class="py-24 bg-mystic-cream border-t border-mystic-clay/20">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row gap-16">
                     
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Methodology</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Experimental Design</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Consumer Behavior</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Judgment & Decision Making</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Text-based Methods</span>
+                    <div class="lg:w-1/3">
+                        <h2 class="font-serif italic text-4xl text-mystic-teal mb-6">Methodological & <br/>Technical Toolkit</h2>
+                        <div class="w-16 h-1 bg-mystic-clay mb-8"></div>
+                        <p class="text-mystic-text-dark/80 text-lg leading-relaxed font-serif">
+                            I leverage a mixed-method approach, integrating traditional psychological experimentation with modern data science techniques to derive robust insights.
+                        </p>
+                        <div class="mt-12 hidden lg:block">
+                            <i class="fa-solid fa-layer-group text-9xl text-mystic-teal/5"></i>
                         </div>
                     </div>
 
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Computational Tools</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Python (Pandas, NumPy)</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">statsmodels (Logit, Chi-square)</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Chinese NLP (Jieba, Regex)</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Git & GitHub</span>
+                    <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- Methodology -->
+                        <div class="bg-white p-8 rounded-sm shadow-sm border-l-2 border-mystic-gold hover:border-mystic-clay hover:shadow-md transition-all duration-300">
+                            <!-- Changed to font-sans font-bold -->
+                            <h3 class="text-xs font-sans font-bold text-mystic-clay uppercase tracking-[0.2em] mb-6">Methodology</h3>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Experimental Design</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Consumer Behavior</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Judgment & Decision Making</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Text-based Methods</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Statistical Analysis</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Chi-square Tests</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Logistic Regression</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Mediation / Moderation (PROCESS)</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">SPSS & JASP</span>
+                        <!-- Computational Tools -->
+                        <div class="bg-white p-8 rounded-sm shadow-sm border-l-2 border-mystic-gold hover:border-mystic-clay hover:shadow-md transition-all duration-300">
+                            <!-- Changed to font-sans font-bold -->
+                            <h3 class="text-xs font-sans font-bold text-mystic-clay uppercase tracking-[0.2em] mb-6">Computational Tools</h3>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Python (Pandas, NumPy)</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">statsmodels (Logit, Chi-square)</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Chinese NLP (Jieba, Regex)</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Git & GitHub</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Reproducible AI-Augmented Pipelines</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">LLM-assisted Coding (Llama-3 via Groq)</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Zero-shot JSON-schema Classification</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Automated Text Cleaning &amp; Labeling</span>
-                            <span class="px-4 py-2 bg-slate-100 text-navy-900 text-sm font-medium rounded-md">Documented Workflow (RWD)</span>
+                        <!-- Statistical Analysis -->
+                        <div class="bg-white p-8 rounded-sm shadow-sm border-l-2 border-mystic-gold hover:border-mystic-clay hover:shadow-md transition-all duration-300">
+                            <!-- Changed to font-sans font-bold -->
+                            <h3 class="text-xs font-sans font-bold text-mystic-clay uppercase tracking-[0.2em] mb-6">Statistical Analysis</h3>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Chi-square Tests</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Logistic Regression</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Mediation / Moderation (PROCESS)</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">SPSS & JASP</span>
+                            </div>
                         </div>
-                    </div>
 
+                        <!-- Reproducible AI-Augmented Pipelines -->
+                        <div class="bg-white p-8 rounded-sm shadow-sm border-l-2 border-mystic-gold hover:border-mystic-clay hover:shadow-md transition-all duration-300">
+                            <!-- Changed to font-sans font-bold -->
+                            <h3 class="text-xs font-sans font-bold text-mystic-clay uppercase tracking-[0.2em] mb-6">Reproducible AI-Augmented Pipelines</h3>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">LLM-assisted Coding</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Zero-shot Classification</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Automated Text Cleaning</span>
+                                <span class="px-4 py-2 bg-mystic-cream text-mystic-teal text-sm font-medium rounded-sm border border-transparent hover:border-mystic-teal/20 transition-colors cursor-default">Documented Workflow (RWD)</span>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Final CTA -->
-    <section class="py-20 bg-white flex justify-center border-t border-slate-100">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="font-serif text-2xl md:text-3xl font-bold text-navy-900 mb-6">
-                Interested in my full academic background?
-            </h2>
-            <a href="Final_Meng_Jen_s_Resume.pdf" class="inline-flex items-center justify-center bg-navy-900 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-amber-600 transition-colors shadow-lg">
-                Download Full Resume (PDF)
-            </a>
-        </div>
-    </section>
+        <!-- Final CTA -->
+        <section class="py-24 bg-mystic-cream border-t border-mystic-clay/20 flex justify-center relative overflow-hidden">
+             <!-- Decorative element -->
+             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-mystic-clay/20"></div>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-navy-900 text-slate-400 py-12 border-t border-slate-800">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+              <div class="container mx-auto px-6 text-center z-10">
+                  <h2 class="font-serif italic text-3xl md:text-5xl text-mystic-teal mb-8">
+                      Interested in my full academic background?
+                  </h2>
+                  <a 
+                    href="Final_Meng_Jen_s_Resume.pdf" 
+                    class="inline-flex items-center justify-center border-2 border-mystic-clay text-mystic-clay px-12 py-4 rounded-full font-sans font-bold tracking-widest text-lg hover:bg-mystic-clay hover:text-white transition-all duration-500 shadow-lg hover:shadow-mystic-gold/20"
+                  >
+                      Download Full Resume
+                  </a>
+              </div>
+          </section>
+
+        <!-- Footer -->
+        <footer id="contact" class="bg-mystic-teal text-mystic-cream/60 py-16 border-t border-mystic-gold/20">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-10">
                 
                 <div class="text-center md:text-left">
-                    <h4 class="font-serif text-xl font-bold text-white mb-2">Meng-Jen (Miya) Lin</h4>
-                    <p class="text-sm opacity-80">Ph.D. Applicant | Marketing (CB) & Psychology</p>
+                    <!-- Changed to font-sans font-bold -->
+                    <h4 class="font-sans font-bold text-2xl text-mystic-cream mb-2">Meng-Jen (Miya) Lin</h4>
+                    <p class="text-sm font-sans tracking-widest uppercase opacity-80">Ph.D. Applicant | Marketing (CB) & Psychology</p>
                 </div>
 
-                <div class="flex flex-col items-center md:items-end gap-4">
-                     <div class="flex gap-4">
-                        <a href="mailto:mengjen.miya.lin@gmail.com" class="hover:text-white transition-colors flex items-center gap-2">
-                           <i data-lucide="mail" class="w-4 h-4"></i>
-                           <span>mengjen.miya.lin@gmail.com</span>
+                <div class="flex flex-col items-center md:items-end gap-6">
+                    <div class="flex gap-6">
+                        <a href="mailto:mengjen.miya.lin@gmail.com" class="hover:text-white transition-colors flex items-center gap-3 group">
+                            <div class="w-10 h-10 border border-mystic-gold/30 rounded-full flex items-center justify-center group-hover:bg-mystic-gold group-hover:text-mystic-teal transition-all">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <span class="font-serif italic text-lg">mengjen.miya.lin@gmail.com</span>
                         </a>
-                     </div>
-                     <div class="flex gap-4">
-                        <a href="https://linkedin.com/in/meng-jen-miya-lin" target="_blank" rel="noreferrer" class="hover:text-amber-500 transition-colors">
-                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex gap-6">
+                        <a href="https://linkedin.com/in/meng-jen-miya-lin" target="_blank" rel="noreferrer" class="hover:text-mystic-gold transition-colors">
+                            <i class="fa-brands fa-linkedin text-2xl"></i>
                         </a>
-                     </div>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="mt-16 pt-8 border-t border-mystic-cream/10 text-center text-xs tracking-widest opacity-40 font-sans">
+                    &copy; 2025 Meng-Jen Lin. All Rights Reserved.
                 </div>
             </div>
-            
-            <div class="mt-12 pt-8 border-t border-slate-800 text-center text-xs tracking-wider opacity-60">
-                &copy; 2025 Meng-Jen Lin. All Rights Reserved.
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
-    <!-- Scripts -->
+    <!-- Logic Scripts -->
     <script>
-        // Initialize Icons
-        lucide.createIcons();
-
-        // Navbar Interaction
+        // Navbar scroll effect
         const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-mystic-cream/95', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'border-b', 'border-mystic-gold/20');
+                navbar.classList.remove('bg-transparent', 'py-8');
+            } else {
+                navbar.classList.remove('bg-mystic-cream/95', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'border-b', 'border-mystic-gold/20');
+                navbar.classList.add('bg-transparent', 'py-8');
+            }
+        });
+
+        // Mobile Menu Toggle
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('glass-nav', 'py-4');
-                navbar.classList.remove('py-6', 'bg-transparent');
-            } else {
-                navbar.classList.remove('glass-nav', 'py-4');
-                navbar.classList.add('py-6', 'bg-transparent');
-            }
-        });
 
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
