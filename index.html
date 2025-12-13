@@ -198,6 +198,32 @@
                             <i class="fa-solid fa-download text-xs"></i>
                         </a>
                     </div>
+                    <!-- Dynamic Latest Update Section -->
+                    <div class="w-full max-w-lg mx-auto lg:mx-0">
+                        <div id="latest-news-card" class="flex items-start gap-5 p-5 border-l-4 border-mystic-clay bg-white shadow-sm hover:shadow-md transition-all duration-300 rounded-r-sm group cursor-pointer relative overflow-hidden">
+                            <!-- Loading State -->
+                            <div id="news-loading" class="absolute inset-0 bg-white flex items-center justify-center z-10 text-mystic-teal/50">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i>
+                            </div>
+
+                            <!-- Date Block -->
+                            <div class="flex-shrink-0 flex flex-col items-center justify-center border-r border-mystic-gold/20 pr-5">
+                                <span id="news-month" class="text-[10px] font-sans font-bold text-mystic-clay uppercase tracking-widest">---</span>
+                                <span id="news-day" class="font-serif text-3xl text-mystic-teal leading-none group-hover:text-mystic-clay transition-colors">--</span>
+                            </div>
+
+                            <!-- Text Content -->
+                            <div>
+                                <span id="news-tag" class="inline-block px-2 py-0.5 bg-mystic-teal/5 text-mystic-teal text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">
+                                    Loading...
+                                </span>
+                                <p id="news-content" class="font-serif italic text-lg text-mystic-text-dark leading-snug">
+                                    Fetching latest updates...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of Dynamic Section -->
                 </div>
 
                 <!-- Image Content - The Arch -->
@@ -720,9 +746,193 @@
                     &copy; 2025 Meng-Jen Lin. All Rights Reserved.
                 </div>
             </div>
+            <!-- ADMIN BUTTON (Bottom Right) -->
+            <button id="admin-toggle-btn" class="fixed bottom-6 right-6 w-12 h-12 bg-mystic-clay text-white rounded-full shadow-lg flex items-center justify-center hover:bg-mystic-gold transition-all z-50 opacity-50 hover:opacity-100 hidden" title="Update News">
+                <i class="fa-solid fa-pen"></i>
+            </button>
         </footer>
     </div>
 
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="modal-backdrop"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white p-8 rounded-sm shadow-2xl animate-fade-in-down">
+            <h3 class="font-serif text-2xl text-mystic-teal mb-6">Update Latest News</h3>
+            <form id="news-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-mystic-text-dark uppercase tracking-wider mb-2">Month (e.g. Dec)</label>
+                    <input type="text" id="input-month" class="w-full border border-gray-300 p-2 font-sans focus:outline-none focus:border-mystic-clay" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-mystic-text-dark uppercase tracking-wider mb-2">Day (e.g. 12)</label>
+                    <input type="text" id="input-day" class="w-full border border-gray-300 p-2 font-sans focus:outline-none focus:border-mystic-clay" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-mystic-text-dark uppercase tracking-wider mb-2">Tag (e.g. Latest News)</label>
+                    <input type="text" id="input-tag" class="w-full border border-gray-300 p-2 font-sans focus:outline-none focus:border-mystic-clay" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-mystic-text-dark uppercase tracking-wider mb-2">Content</label>
+                    <textarea id="input-content" rows="3" class="w-full border border-gray-300 p-2 font-serif focus:outline-none focus:border-mystic-clay" required></textarea>
+                </div>
+                <!-- Passcode Field for simple security -->
+                <div>
+                    <label class="block text-xs font-bold text-mystic-text-dark uppercase tracking-wider mb-2">Admin Passcode</label>
+                    <input type="password" id="input-passcode" class="w-full border border-gray-300 p-2 font-sans focus:outline-none focus:border-mystic-clay" placeholder="Enter code to post" required>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button type="button" id="modal-cancel" class="flex-1 py-3 border border-gray-300 text-gray-500 font-bold text-sm tracking-widest hover:bg-gray-50 transition-colors">CANCEL</button>
+                    <button type="submit" class="flex-1 py-3 bg-mystic-teal text-white font-bold text-sm tracking-widest hover:bg-mystic-clay transition-colors">UPDATE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Config from environment
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // UI Elements
+        const displayMonth = document.getElementById('news-month');
+        const displayDay = document.getElementById('news-day');
+        const displayTag = document.getElementById('news-tag');
+        const displayContent = document.getElementById('news-content');
+        const loadingOverlay = document.getElementById('news-loading');
+        
+        const adminBtn = document.getElementById('admin-toggle-btn');
+        const adminModal = document.getElementById('admin-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalCancel = document.getElementById('modal-cancel');
+        const newsForm = document.getElementById('news-form');
+
+        // Check for admin parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('mode') && urlParams.get('mode') === 'edit') {
+            adminBtn.classList.remove('hidden');
+        }
+
+        // Auth Logic - Fixed for Permissions
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Authentication error:", error);
+            }
+        };
+        initAuth();
+
+        // Listen for Auth State Changes before attaching listeners
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("User authenticated:", user.uid);
+                setupRealtimeListener();
+            } else {
+                console.log("User not authenticated yet.");
+            }
+        });
+
+        // Listen for updates
+        function setupRealtimeListener() {
+            // Using a specific path for public data as per rules.
+            const newsCollection = collection(db, 'artifacts', appId, 'public', 'data', 'news');
+            
+            onSnapshot(newsCollection, (snapshot) => {
+                const newsItems = [];
+                snapshot.forEach((doc) => {
+                    newsItems.push(doc.data());
+                });
+
+                // Sort by timestamp descending (newest first)
+                newsItems.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+
+                if (newsItems.length > 0) {
+                    const latest = newsItems[0];
+                    updateDisplay(latest);
+                } else {
+                    // Default/Fallback content if DB is empty
+                    loadingOverlay.classList.add('hidden');
+                    displayContent.innerText = "No updates yet.";
+                }
+            }, (error) => {
+                console.error("Error reading news:", error);
+                loadingOverlay.classList.add('hidden');
+            });
+        }
+
+        function updateDisplay(data) {
+            displayMonth.innerText = data.month || 'DEC';
+            displayDay.innerText = data.day || '12';
+            displayTag.innerText = data.tag || 'LATEST NEWS';
+            displayContent.innerText = data.content || '...';
+            loadingOverlay.classList.add('hidden');
+        }
+
+        // Admin Modal Logic
+        function toggleModal() {
+            adminModal.classList.toggle('hidden');
+        }
+
+        adminBtn.addEventListener('click', toggleModal);
+        modalBackdrop.addEventListener('click', toggleModal);
+        modalCancel.addEventListener('click', toggleModal);
+
+        // Submit new news
+        newsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const passcode = document.getElementById('input-passcode').value;
+            if (passcode !== '1234') { // Simple passcode check
+                alert("Incorrect Passcode!");
+                return;
+            }
+
+            // Check auth again
+            if (!auth.currentUser) {
+                alert("You must be signed in to post updates.");
+                return;
+            }
+
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = "POSTING...";
+            btn.disabled = true;
+
+            const newNews = {
+                month: document.getElementById('input-month').value,
+                day: document.getElementById('input-day').value,
+                tag: document.getElementById('input-tag').value,
+                content: document.getElementById('input-content').value,
+                timestamp: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'news'), newNews);
+                toggleModal();
+                newsForm.reset();
+            } catch (error) {
+                console.error("Error adding news:", error);
+                alert("Failed to update news. Please try again.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+    
     <!-- Logic Scripts -->
     <script>
         // Navbar scroll effect
