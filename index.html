@@ -44,6 +44,10 @@
                 'fade-in-down': {
                     '0%': { opacity: '0', transform: 'translateY(-10px)' },
                     '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                'fade-in': {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
                 }
             },
             animation: {
@@ -93,9 +97,9 @@
             background-color: #8C5E3C;
             transition: width 0.3s ease;
         }
-        .link-underline:hover::after {
-            width: 100%;
-        }
+        .link-underline:hover::after {width: 100%;}
+        
+        .modal-open { overflow: hidden; }
     </style>
 <script type="importmap">
 {
