@@ -795,9 +795,10 @@
     <!-- Firebase Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // ✅ User provided config
         const firebaseConfig = {
             apiKey: "AIzaSyDc-gVqdra4wBPY8JEbGSe-M4Rf1gpTb1Q",
             authDomain: "miya-portfolio-e6542.firebaseapp.com",
@@ -806,63 +807,63 @@
             messagingSenderId: "258968597722",
             appId: "1:258968597722:web:3c9953ac3108eb13b421e3",
             measurementId: "G-69VL3R2140"
-            };
-        
-        // Config from environment
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // UI Elements
-        const displayMonth = document.getElementById('news-month');
-        const displayDay = document.getElementById('news-day');
-        const displayTag = document.getElementById('news-tag');
-        const displayContent = document.getElementById('news-content');
-        const loadingOverlay = document.getElementById('news-loading');
-        
-        const adminBtn = document.getElementById('admin-toggle-btn');
-        const adminModal = document.getElementById('admin-modal');
-        const modalBackdrop = document.getElementById('modal-backdrop');
-        const modalCancel = document.getElementById('modal-cancel');
-        const newsForm = document.getElementById('news-form');
-
-        // Check for admin parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('mode') && urlParams.get('mode') === 'edit') {
-            adminBtn.classList.remove('hidden');
-        }
-
-        // Auth Logic - Fixed for Permissions
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Authentication error:", error);
-            }
         };
-        initAuth();
 
-        // Listen for Auth State Changes before attaching listeners
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("User authenticated:", user.uid);
-                setupRealtimeListener();
-            } else {
-                console.log("User not authenticated yet.");
+        let app, auth, db;
+
+        // Initialize safely
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                initAuth();
+                
+                // Set up auth listener
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        console.log("User authenticated:", user.uid);
+                        setupRealtimeListener();
+                    } else {
+                        console.log("User not authenticated yet.");
+                    }
+                });
+
+                // Check for admin param after DOM load
+                const urlParams = new URLSearchParams(window.location.search);
+                const adminBtn = document.getElementById('admin-toggle-btn');
+                if (urlParams.has('mode') && urlParams.get('mode') === 'edit' && adminBtn) {
+                    adminBtn.classList.remove('hidden');
+                }
+
+                setupModalListeners();
+
+            } catch (e) {
+                console.error("Firebase init failed:", e);
+                showFallback("Unable to connect to database.");
             }
         });
 
-        // Listen for updates
+        const initAuth = async () => {
+            try {
+                await signInAnonymously(auth);
+            } catch (error) {
+                console.error("Auth error:", error);
+                showFallback("Authentication failed.");
+            }
+        };
+
         function setupRealtimeListener() {
-            // Using a specific path for public data as per rules.
-            const newsCollection = collection(db, 'artifacts', appId, 'public', 'data', 'news');
+            const displayMonth = document.getElementById('news-month');
+            const displayDay = document.getElementById('news-day');
+            const displayTag = document.getElementById('news-tag');
+            const displayContent = document.getElementById('news-content');
+            const loadingOverlay = document.getElementById('news-loading');
+
+            if (!db) return;
+
+            const newsCollection = collection(db, 'news');
             
             onSnapshot(newsCollection, (snapshot) => {
                 const newsItems = [];
@@ -870,112 +871,126 @@
                     newsItems.push(doc.data());
                 });
 
-                // Sort by timestamp descending (newest first)
+                // Sort descending
                 newsItems.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
 
                 if (newsItems.length > 0) {
                     const latest = newsItems[0];
-                    updateDisplay(latest);
+                    if (displayMonth) displayMonth.innerText = latest.month || 'DEC';
+                    if (displayDay) displayDay.innerText = latest.day || '12';
+                    if (displayTag) displayTag.innerText = latest.tag || 'LATEST NEWS';
+                    if (displayContent) displayContent.innerText = latest.content || '...';
+                    if (loadingOverlay) loadingOverlay.classList.add('hidden');
                 } else {
-                    // Default/Fallback content if DB is empty
-                    loadingOverlay.classList.add('hidden');
-                    displayContent.innerText = "No updates yet.";
+                    showFallback("No updates yet.");
                 }
             }, (error) => {
-                console.error("Error reading news:", error);
-                loadingOverlay.classList.add('hidden');
+                console.error("Snapshot error:", error);
+                showFallback();
             });
         }
 
-        function updateDisplay(data) {
-            displayMonth.innerText = data.month || 'DEC';
-            displayDay.innerText = data.day || '12';
-            displayTag.innerText = data.tag || 'LATEST NEWS';
-            displayContent.innerText = data.content || '...';
-            loadingOverlay.classList.add('hidden');
+        function showFallback(msg) {
+            const loadingOverlay = document.getElementById('news-loading');
+            const displayContent = document.getElementById('news-content');
+            if (loadingOverlay) loadingOverlay.classList.add('hidden');
+            if (displayContent) displayContent.innerText = msg || "My paper has been accepted for presentation at ACR 2025!";
         }
 
-        // Admin Modal Logic
-        function toggleModal() {
-            adminModal.classList.toggle('hidden');
-        }
+        function setupModalListeners() {
+            const adminBtn = document.getElementById('admin-toggle-btn');
+            const adminModal = document.getElementById('admin-modal');
+            const modalBackdrop = document.getElementById('modal-backdrop');
+            const modalCancel = document.getElementById('modal-cancel');
+            const newsForm = document.getElementById('news-form');
 
-        adminBtn.addEventListener('click', toggleModal);
-        modalBackdrop.addEventListener('click', toggleModal);
-        modalCancel.addEventListener('click', toggleModal);
+            if (!adminBtn || !adminModal) return;
 
-        // Submit new news
-        newsForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const passcode = document.getElementById('input-passcode').value;
-            if (passcode !== '1234') { // Simple passcode check
-                alert("Incorrect Passcode!");
-                return;
-            }
-
-            // Check auth again
-            if (!auth.currentUser) {
-                alert("You must be signed in to post updates.");
-                return;
-            }
-
-            const btn = e.target.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
-            btn.innerText = "POSTING...";
-            btn.disabled = true;
-
-            const newNews = {
-                month: document.getElementById('input-month').value,
-                day: document.getElementById('input-day').value,
-                tag: document.getElementById('input-tag').value,
-                content: document.getElementById('input-content').value,
-                timestamp: serverTimestamp()
+            const toggleModal = () => {
+                adminModal.classList.toggle('hidden');
             };
 
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'news'), newNews);
-                toggleModal();
-                newsForm.reset();
-            } catch (error) {
-                console.error("Error adding news:", error);
-                alert("Failed to update news. Please try again.");
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
-        });
+            adminBtn.addEventListener('click', toggleModal);
+            modalBackdrop.addEventListener('click', toggleModal);
+            modalCancel.addEventListener('click', toggleModal);
+
+            newsForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const passcode = document.getElementById('input-passcode').value;
+                if (passcode !== '1234') { 
+                    alert("Incorrect Passcode!");
+                    return;
+                }
+
+                if (!auth.currentUser) {
+                    alert("Not signed in.");
+                    return;
+                }
+
+                const btn = e.target.querySelector('button[type="submit"]');
+                const originalText = btn.innerText;
+                btn.innerText = "POSTING...";
+                btn.disabled = true;
+
+                const newNews = {
+                    month: document.getElementById('input-month').value,
+                    day: document.getElementById('input-day').value,
+                    tag: document.getElementById('input-tag').value,
+                    content: document.getElementById('input-content').value,
+                    timestamp: serverTimestamp()
+                };
+
+                try {
+                    await addDoc(collection(db, 'news'), newNews);
+                    toggleModal();
+                    newsForm.reset();
+                } catch (error) {
+                    console.error("Add doc error:", error);
+                    alert("Failed to update.");
+                } finally {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            });
+        }
     </script>
     
-    <!-- Logic Scripts -->
+    <!-- UI Logic Scripts -->
     <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('bg-mystic-cream/95', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'border-b', 'border-mystic-gold/20');
-                navbar.classList.remove('bg-transparent', 'py-8');
-            } else {
-                navbar.classList.remove('bg-mystic-cream/95', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'border-b', 'border-mystic-gold/20');
-                navbar.classList.add('bg-transparent', 'py-8');
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navbar scroll
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 20) {
+                        navbar.classList.add('bg-mystic-cream/95', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'border-b', 'border-mystic-gold/20');
+                        navbar.classList.remove('bg-transparent', 'py-8');
+                    } else {
+                        navbar.classList.remove('bg-mystic-cream/95', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'border-b', 'border-mystic-gold/20');
+                        navbar.classList.add('bg-transparent', 'py-8');
+                    }
+                });
             }
-        });
 
-        // Mobile Menu Toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
+            // Mobile Menu
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenu.classList.toggle('flex');
-        });
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                });
 
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                mobileMenu.classList.remove('flex');
-            });
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('flex');
+                    });
+                });
+            }
         });
     </script>
 </body>
