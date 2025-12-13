@@ -798,6 +798,16 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyDc-gVqdra4wBPY8JEbGSe-M4Rf1gpTb1Q",
+            authDomain: "miya-portfolio-e6542.firebaseapp.com",
+            projectId: "miya-portfolio-e6542",
+            storageBucket: "miya-portfolio-e6542.firebasestorage.app",
+            messagingSenderId: "258968597722",
+            appId: "1:258968597722:web:3c9953ac3108eb13b421e3",
+            measurementId: "G-69VL3R2140"
+            };
+        
         // Config from environment
         const firebaseConfig = JSON.parse(__firebase_config);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
